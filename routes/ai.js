@@ -28,10 +28,13 @@ router.post('/chat', async (req, res) => {
     // Dynamically swap the AI's personality based on the toggle!
     const activeContext = challengeMode ? CHALLENGE_CONTEXT : PORTFOLIO_CONTEXT;
 
-    const model = ai.getGenerativeModel({ 
-      model: 'gemini-2.5-flash',
-      systemInstruction: activeContext 
-    });
+    const model = genAI.getGenerativeModel({
+  model: "gemini-2.5-flash",
+  systemInstruction: "You are the personal AI assistant for Badal Vasava, a Full-Stack Engineer and Systems Architect. Your job is to enthusiastically discuss his skills in React, Node.js, PostgreSQL, and AppSheet, as well as his background managing complex logistics data at Zomato and Xpressbees. Keep your answers concise, professional, and conversational. Do not repeat the same phrases. If the user asks a technical question, answer it intelligently to prove Badal's technical competence.",
+  generationConfig: {
+    temperature: 0.7, // 0.0 is boring/repetitive, 1.0 is highly creative
+  }
+});
 
     const formattedHistory = history.map(msg => ({
       role: msg.role === 'assistant' ? 'model' : 'user',
